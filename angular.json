@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "weballer"
+    }
+  },
+  "defaultProject": "weballer",
+  "cli": {
+    "analytics": false
+  }
 }
