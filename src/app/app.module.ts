@@ -3,12 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { EyeballerComponent } from './components/eyeballer/eyeballer.component';
+import { EyeBallerComponent } from './components/eyeballer/eyeballer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EyeballerComponent
+    EyeBallerComponent
   ],
   imports: [
     BrowserModule,
