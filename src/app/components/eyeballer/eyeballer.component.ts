@@ -48,8 +48,7 @@ export class EyeBallerComponent implements OnInit {
   }
 
   onRemove(event) {
-    console.log('Remove:');
-    console.log(event);
+    this.images.delete(event.name);
   }
 
   async fetchTfFiles() {
@@ -85,7 +84,7 @@ export class EyeBallerComponent implements OnInit {
     this.eyeballing = true;
     const model = await tf.loadLayersModel(tf.io.browserFiles(this.tfFiles));
     const keys = Array.from(this.images.keys());
-    await Promise.all(keys.map((key) => {
+    await Promise.all(keys.map(async (key) => {
       this.classifyImage(key, model);
     }));
     this.eyeballing = false;

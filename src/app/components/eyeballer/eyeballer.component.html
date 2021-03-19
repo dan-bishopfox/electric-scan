@@ -3,11 +3,15 @@
   Eye Baller
 </h1>
 
-<div>
-  <button mat-button color="primary" (click)="startEyeball()">Eye Ball</button>
+<div *ngIf="!tfFilesCompleted">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
 
-<div>
+<div *ngIf="tfFilesCompleted">
+  <div>
+    <button mat-button color="primary" (click)="startEyeball()">Eye Ball</button>
+  </div>
+  
   <ngx-dropzone (change)="onSelect($event)">
     <ngx-dropzone-label class="drop-files">
       Drop Files
