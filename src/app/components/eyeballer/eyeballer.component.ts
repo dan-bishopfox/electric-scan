@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import * as base64 from 'base64-arraybuffer';
 import * as tf from '@tensorflow/tfjs';
 
@@ -13,6 +12,7 @@ export class EyeBallerComponent implements OnInit {
 
   offset = tf.scalar(127.5);
   images = new Map<string, File>();
+  dataURIs = new Map<string, string>();
   confidence = 0.6;
 
   width = 1920;
@@ -23,6 +23,7 @@ export class EyeBallerComponent implements OnInit {
 
   eyeballing = false;
   eyeballCompleted = false;
+  eyeballedCount = 0;
   classifications = {
     custom404: [],
     loginPage: [],
@@ -85,16 +86,20 @@ export class EyeBallerComponent implements OnInit {
     const model = await tf.loadLayersModel(tf.io.browserFiles(this.tfFiles));
     const keys = Array.from(this.images.keys());
     await Promise.all(keys.map(async (key) => {
-      this.classifyImage(key, model);
+      await this.classifyImage(key, model);
+      this.eyeballedCount++;
     }));
+    console.log('eyeballed all images');
     this.eyeballing = false;
     this.eyeballCompleted = true;
+    this.images = null;
   }
 
   async classifyImage(key: string, model: tf.LayersModel) {
     console.log(`classifying: ${key}`);
     const img = new Image(this.width, this.height);
     img.src = await this.dataURI(this.images.get(key));
+    this.dataURIs.set(key, img.src);
 
     const tensor = tf.browser.fromPixels(img)
       .resizeNearestNeighbor([224, 224])
@@ -126,5 +131,9 @@ export class EyeBallerComponent implements OnInit {
     const buf = await file.arrayBuffer();
     const ext = file.name.split('.').reverse()[0];
     return `data:image/${encodeURIComponent(ext)};base64,${base64.encode(buf)}`;
+  }
+
+  eyeballPercent() {
+    return (this.eyeballedCount / this.images.size) * 100;
   }
 }

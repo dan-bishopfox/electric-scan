@@ -1,25 +1,145 @@
-<h1>
-  <i class="fas fa-eye fa-fw"></i>
-  Eye Baller
-</h1>
+<mat-toolbar class="app-toolbar" color="primary">
+  <h2>
+    <i class="fas fa-eye fa-fw"></i>
+    Eye Baller
+  </h2>
+  <span style="width: 60px;"></span>
+</mat-toolbar>
 
+<!-- Model Loading Progress -->
 <div *ngIf="!tfFilesCompleted">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
 
-<div *ngIf="tfFilesCompleted">
-  <div>
-    <button mat-button color="primary" (click)="startEyeball()">Eye Ball</button>
-  </div>
-  
-  <ngx-dropzone (change)="onSelect($event)">
-    <ngx-dropzone-label class="drop-files">
-      Drop Files
-    </ngx-dropzone-label>
-    <ngx-dropzone-image-preview *ngFor="let f of imageFiles" [file]="f" [removable]="true" (removed)="onRemove(f)">
+<!-- Drop Zone -->
+<div *ngIf="tfFilesCompleted && !eyeballing && !eyeballCompleted">
+  <mat-card>
+
+    <button mat-button (click)="startEyeball()">
+      Start
+    </button>
+
+    <br />
+    <br />
+
+    <ngx-dropzone (change)="onSelect($event)">
       <ngx-dropzone-label>
-        {{ f.name }} ({{ f.type }})
+        Drop Files
       </ngx-dropzone-label>
-    </ngx-dropzone-image-preview>
-  </ngx-dropzone>
+      <ngx-dropzone-image-preview *ngFor="let f of imageFiles" [file]="f" [removable]="true" (removed)="onRemove(f)">
+        <ngx-dropzone-label>
+          {{ f.name }} ({{ f.type }})
+        </ngx-dropzone-label>
+      </ngx-dropzone-image-preview>
+    </ngx-dropzone>
+  </mat-card>
+</div>
+
+<!-- Progress Bar -->
+<div *ngIf="tfFilesCompleted && eyeballing && !eyeballCompleted">
+  <mat-card>
+    <h3>{{eyeballedCount}} of {{this.images.size}}</h3>
+    <mat-progress-bar mode="determinate" [value]="eyeballPercent()"></mat-progress-bar>
+  </mat-card>
+</div>
+
+<!-- Results -->
+<div *ngIf="tfFilesCompleted && !eyeballing && eyeballCompleted">
+  <div class="results-container">
+
+    <h2>Login Page</h2>
+    <div class="eyeballed-class-container">
+
+      <div *ngFor="let key of classifications.loginPage; let index = index" [attr.data-index]="index">
+        <mat-card class="result-card">
+          <mat-card-header>
+            <mat-card-title>
+              <span matBadge="{{ index + 1 }}" matBadgeOverlap="false" matBadgePosition="above before"
+                matBadgeColor="primary">
+                {{ key }}
+              </span>
+            </mat-card-title>
+            <mat-card-subtitle class="monospace">
+              {{ key }}
+            </mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image [attr.src]="">
+          <div>
+            <i class="fa fa-fw fa-2x fa-search"></i>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+
+    <h2>Old Looking</h2>
+    <div class="eyeballed-class-container">
+      <div *ngFor="let key of classifications.oldLooking; let index = index" [attr.data-index]="index">
+        <mat-card class="result-card">
+          <mat-card-header>
+            <mat-card-title>
+              <span matBadge="{{ index + 1 }}" matBadgeOverlap="false" matBadgePosition="above before"
+                matBadgeColor="primary">
+                {{ key }}
+              </span>
+            </mat-card-title>
+            <mat-card-subtitle class="monospace">
+              {{ key }}
+            </mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image [attr.src]="">
+          <div>
+            <i class="fa fa-fw fa-2x fa-search"></i>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+
+    <h2>Homepage</h2>
+    <div class="eyeballed-class-container">
+      <div *ngFor="let key of classifications.homePage; let index = index" [attr.data-index]="index">
+        <mat-card class="result-card">
+          <mat-card-header>
+            <mat-card-title>
+              <span matBadge="{{ index + 1 }}" matBadgeOverlap="false" matBadgePosition="above before"
+                matBadgeColor="primary">
+                {{ key }}
+              </span>
+            </mat-card-title>
+            <mat-card-subtitle class="monospace">
+              {{ key }}
+            </mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image [attr.src]="">
+          <div>
+            <i class="fa fa-fw fa-2x fa-search"></i>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+
+    <h2>Page Not Found</h2>
+    <div class="eyeballed-class-container">
+      <div *ngFor="let key of classifications.custom404; let index = index" [attr.data-index]="index">
+        <mat-card class="result-card">
+          <mat-card-header>
+            <mat-card-title>
+              <span matBadge="{{ index + 1 }}" matBadgeOverlap="false" matBadgePosition="above before"
+                matBadgeColor="primary">
+                {{ key }}
+              </span>
+            </mat-card-title>
+            <mat-card-subtitle class="monospace">
+              {{ key }}
+            </mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image [attr.src]="dataURIs.get(key)">
+          <div>
+            <i class="fa fa-fw fa-2x fa-search"></i>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+
+  </div>
+
 </div>
