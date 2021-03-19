@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-// import { take } from 'rxjs/operators';
+import * as base64 from 'base64-arraybuffer';
 import * as tf from '@tensorflow/tfjs';
 
 
@@ -12,10 +12,10 @@ import * as tf from '@tensorflow/tfjs';
 export class EyeBallerComponent implements OnInit {
 
   offset = tf.scalar(127.5);
-  images = new Map<string, string>();
+  images = new Map<string, File>();
   confidence = 0.6;
 
-  files: File[];
+  // imageFiles: File[] = [];
 
   width = 1920;
   height = 1080;
@@ -38,15 +38,31 @@ export class EyeBallerComponent implements OnInit {
     this.fetchTfFiles();
   }
 
+  get imageFiles(): File[] {
+    return Array.from(this.images.values());
+  }
+
   onSelect(event) {
+    console.log(event);
+    event.addedFiles.forEach((file: File) => {
+      this.images.set(file.name, file);
+    });
+  }
+
+  onRemove(event) {
+    console.log('Remove:');
     console.log(event);
   }
 
   async fetchTfFiles() {
-    const resp = await fetch('/assets/tf/model.json');
+    let resp = await fetch('/assets/tf/model.json');
     const manifest = await resp.json();
     const paths: string[] = Array.from(manifest.weightsManifest[0]?.paths);
+
     this.tfFiles = [];
+    resp = await fetch('/assets/tf/model.json');
+    const blob = await resp.blob();
+    this.tfFiles.push(new File([blob], 'model.json'));
     await Promise.all(paths.map(async (path) => {
       const tfFile = await this.fetchTfFile(path);
       this.tfFiles.push(tfFile);
@@ -59,6 +75,11 @@ export class EyeBallerComponent implements OnInit {
     const resp = await fetch(`/assets/tf/${base}`);
     const blob = await resp.blob();
     return new File([blob], base);
+  }
+
+  async startEyeball() {
+    await this.eyeballScan();
+    console.log(this.classifications);
   }
 
   async eyeballScan(): Promise<void> {
@@ -76,7 +97,8 @@ export class EyeBallerComponent implements OnInit {
   async classifyImage(key: string, model: tf.LayersModel) {
     console.log(`classifying: ${key}`);
     const img = new Image(this.width, this.height);
-    img.src = this.images.get(key);
+    img.src = await this.dataURI(this.images.get(key));
+
     const tensor = tf.browser.fromPixels(img)
       .resizeNearestNeighbor([224, 224])
       .toFloat()
@@ -101,5 +123,11 @@ export class EyeBallerComponent implements OnInit {
       console.log(`Old Looking: ${key}`);
       this.classifications.oldLooking.push(key);
     }
+  }
+
+  async dataURI(file: File): Promise<string> {
+    const buf = await file.arrayBuffer();
+    const ext = file.name.split('.').reverse()[0];
+    return `data:image/${encodeURIComponent(ext)};base64,${base64.encode(buf)}`;
   }
 }

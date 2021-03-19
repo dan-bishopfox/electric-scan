@@ -1,9 +1,21 @@
+<h1>
+  <i class="fas fa-eye fa-fw"></i>
+  Eye Baller
+</h1>
 
+<div>
+  <button mat-button color="primary" (click)="startEyeball()">Eye Ball</button>
+</div>
 
-<h1>Angular Dropzone</h1>    
-<ngx-dropzone (change)="onSelect($event)">
-<ngx-dropzone-label>Drop it, baby!</ngx-dropzone-label>
-<ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
-    <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-</ngx-dropzone-preview>
-</ngx-dropzone>
+<div>
+  <ngx-dropzone (change)="onSelect($event)">
+    <ngx-dropzone-label class="drop-files">
+      Drop Files
+    </ngx-dropzone-label>
+    <ngx-dropzone-image-preview *ngFor="let f of imageFiles" [file]="f" [removable]="true" (removed)="onRemove(f)">
+      <ngx-dropzone-label>
+        {{ f.name }} ({{ f.type }})
+      </ngx-dropzone-label>
+    </ngx-dropzone-image-preview>
+  </ngx-dropzone>
+</div>
