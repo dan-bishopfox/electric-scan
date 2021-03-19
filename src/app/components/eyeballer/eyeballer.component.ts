@@ -15,8 +15,8 @@ export class EyeBallerComponent implements OnInit {
   dataURIs = new Map<string, string>();
   confidence = 0.6;
 
-  width = 1920;
-  height = 1080;
+  width = 256;
+  height = 256;
 
   tfFilesCompleted = false;
   tfFiles: File[] = [];
@@ -129,11 +129,19 @@ export class EyeBallerComponent implements OnInit {
 
   async dataURI(file: File): Promise<string> {
     const buf = await file.arrayBuffer();
-    const ext = file.name.split('.').reverse()[0];
+    let ext = file.name.split('.').reverse()[0]?.toLocaleLowerCase();
+    if (!["jpg", "jpeg", "png", "gif", "bmp"].some(allow => allow === ext)) {
+      console.log(`Unknown file type ${ext}, defaulting to jpg`);
+      ext = "jpg";
+    }
     return `data:image/${encodeURIComponent(ext)};base64,${base64.encode(buf)}`;
   }
 
   eyeballPercent() {
     return (this.eyeballedCount / this.images.size) * 100;
+  }
+
+  restart() {
+    window.location.reload();
   }
 }
