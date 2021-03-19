@@ -15,8 +15,6 @@ export class EyeBallerComponent implements OnInit {
   images = new Map<string, File>();
   confidence = 0.6;
 
-  // imageFiles: File[] = [];
-
   width = 1920;
   height = 1080;
 
