@@ -27,8 +27,9 @@ export class EyeBallerComponent implements OnInit {
   classifications = {
     custom404: [],
     loginPage: [],
-    homePage: [],
+    webapp: [],
     oldLooking: [],
+    parked: [],
   };
 
   constructor() {}
@@ -118,12 +119,16 @@ export class EyeBallerComponent implements OnInit {
       this.classifications.loginPage.push(key);
     }
     if (predictions[2] > this.confidence) {
-      console.log(`Homepage: ${key}`);
-      this.classifications.homePage.push(key);
+      console.log(`webapp: ${key}`);
+      this.classifications.webapp.push(key);
     }
     if (predictions[3] > this.confidence) {
       console.log(`Old Looking: ${key}`);
       this.classifications.oldLooking.push(key);
+    }
+    if (predictions[4] > this.confidence) {
+      console.log(`Parked: ${key}`);
+      this.classifications.parked.push(key);
     }
   }
 

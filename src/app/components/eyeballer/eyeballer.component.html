@@ -1,7 +1,7 @@
 <mat-toolbar class="app-toolbar" color="primary"  fxLayout="row" fxLayoutAlign="start center">
   <h2>
     <i class="fas fa-eye fa-fw"></i>
-    Eye Baller
+    EyeBaller
   </h2>
 
   <span fxFlex></span>
@@ -100,9 +100,9 @@
       </div>
     </div>
 
-    <h2>Homepage</h2>
+    <h2>Webapp</h2>
     <div class="eyeballed-class-container">
-      <div *ngFor="let key of classifications.homePage; let index = index" [attr.data-index]="index">
+      <div *ngFor="let key of classifications.webapp; let index = index" [attr.data-index]="index">
         <mat-card class="result-card">
           <mat-card-header>
             <mat-card-title>
@@ -123,9 +123,32 @@
       </div>
     </div>
 
-    <h2>Page Not Found</h2>
+    <h2>Custom 404</h2>
     <div class="eyeballed-class-container">
       <div *ngFor="let key of classifications.custom404; let index = index" [attr.data-index]="index">
+        <mat-card class="result-card">
+          <mat-card-header>
+            <mat-card-title>
+              <span matBadge="{{ index + 1 }}" matBadgeOverlap="false" matBadgePosition="above before"
+                matBadgeColor="primary">
+                {{ key }}
+              </span>
+            </mat-card-title>
+            <mat-card-subtitle class="monospace">
+              {{ key }}
+            </mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image [attr.src]="dataURIs.get(key)">
+          <div>
+            <i class="fa fa-fw fa-2x fa-search"></i>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+
+    <h2>Parked Domain</h2>
+    <div class="eyeballed-class-container">
+      <div *ngFor="let key of classifications.parked; let index = index" [attr.data-index]="index">
         <mat-card class="result-card">
           <mat-card-header>
             <mat-card-title>
