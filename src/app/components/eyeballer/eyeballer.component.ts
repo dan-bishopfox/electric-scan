@@ -79,6 +79,9 @@ export class EyeBallerComponent implements OnInit {
   async startEyeball() {
     await this.eyeballScan();
     console.log(this.classifications);
+
+    // Add totals
+    document.getElementById("webappCount").innerText = String(this.classifications.webapp.length);
   }
 
   async eyeballScan(): Promise<void> {
