@@ -149,4 +149,45 @@ export class EyeBallerComponent implements OnInit {
   restart() {
     window.location.reload();
   }
+
+  async exportResults() {
+    const webappCheckBox = document.getElementById("webappCheckBox") as HTMLInputElement;
+    var oldLookingCheckBox = document.getElementById("oldLookingCheckBox") as HTMLInputElement;
+    var loginCheckBox = document.getElementById("loginCheckBox") as HTMLInputElement;
+    var custom404CheckBox = document.getElementById("custom404CheckBox") as HTMLInputElement;
+    var parkedCheckBox = document.getElementById("parkedCheckBox") as HTMLInputElement;
+
+    var selectedScreens = [];
+    if (webappCheckBox.checked){
+      for (let entry of this.classifications.webapp) {
+        selectedScreens.push(entry);
+      }
+    }
+    if (oldLookingCheckBox.checked){
+      for (let entry of this.classifications.oldLooking) {
+        selectedScreens.push(entry);
+      }
+    }
+    if (loginCheckBox.checked){
+      for (let entry of this.classifications.loginPage) {
+        selectedScreens.push(entry);
+      }
+    }
+    if (custom404CheckBox.checked){
+      for (let entry of this.classifications.custom404) {
+        selectedScreens.push(entry);
+      }
+    }
+    if (parkedCheckBox.checked){
+      for (let entry of this.classifications.parked) {
+        selectedScreens.push(entry);
+      }
+    }
+
+    var str = selectedScreens.join("\n");
+
+    const blob = new Blob([str], { type: 'text/csv' });
+    const url= window.URL.createObjectURL(blob);
+    window.open(url);
+  }
 }

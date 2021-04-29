@@ -54,7 +54,32 @@
 <div *ngIf="tfFilesCompleted && !eyeballing && eyeballCompleted">
   <div class="results-container">
 
-    <h2>Login Page</h2>
+    <h2>Results</h2>
+    <div>
+      <input id="webappCheckBox" type="checkbox" checked="checked" />
+      <label for="webappCheckBox">Webapp</label>
+    </div>
+    <div>
+      <input id="oldLookingCheckBox" type="checkbox"/>
+      <label for="oldLookingCheckBox">Old Looking</label>
+    </div>
+    <div>
+      <input id="loginCheckBox" type="checkbox" />
+      <label for="loginCheckBox">Login Page</label>
+    </div>
+    <div>
+      <input id="custom404CheckBox" type="checkbox"/>
+      <label for="custom404CheckBox">Custom 404</label>
+    </div>
+    <div>
+      <input id="parkedCheckBox" type="checkbox"/>
+      <label for="parkedCheckBox">Parked Domain</label>
+    </div>
+
+    <button mat-raised-button (click)="exportResults()">
+      Export
+    </button>
+
     <div class="eyeballed-class-container">
 
       <div *ngFor="let key of classifications.loginPage; let index = index" [attr.data-index]="index">
@@ -76,99 +101,6 @@
         </mat-card>
       </div>
     </div>
-
-    <h2>Old Looking</h2>
-    <div class="eyeballed-class-container">
-      <div *ngFor="let key of classifications.oldLooking; let index = index" [attr.data-index]="index">
-        <mat-card class="result-card">
-          <mat-card-header>
-            <mat-card-title>
-              <span matBadge="{{ index + 1 }}" matBadgeOverlap="false" matBadgePosition="above before"
-                matBadgeColor="primary">
-                {{ key }}
-              </span>
-            </mat-card-title>
-            <mat-card-subtitle class="monospace">
-              {{ key }}
-            </mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image [attr.src]="dataURIs.get(key)">
-          <div>
-            <i class="fa fa-fw fa-2x fa-search"></i>
-          </div>
-        </mat-card>
-      </div>
-    </div>
-
-    <h2>Webapp</h2>
-    <div class="eyeballed-class-container">
-      <div *ngFor="let key of classifications.webapp; let index = index" [attr.data-index]="index">
-        <mat-card class="result-card">
-          <mat-card-header>
-            <mat-card-title>
-              <span matBadge="{{ index + 1 }}" matBadgeOverlap="false" matBadgePosition="above before"
-                matBadgeColor="primary">
-                {{ key }}
-              </span>
-            </mat-card-title>
-            <mat-card-subtitle class="monospace">
-              {{ key }}
-            </mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image [attr.src]="dataURIs.get(key)">
-          <div>
-            <i class="fa fa-fw fa-2x fa-search"></i>
-          </div>
-        </mat-card>
-      </div>
-    </div>
-
-    <h2>Custom 404</h2>
-    <div class="eyeballed-class-container">
-      <div *ngFor="let key of classifications.custom404; let index = index" [attr.data-index]="index">
-        <mat-card class="result-card">
-          <mat-card-header>
-            <mat-card-title>
-              <span matBadge="{{ index + 1 }}" matBadgeOverlap="false" matBadgePosition="above before"
-                matBadgeColor="primary">
-                {{ key }}
-              </span>
-            </mat-card-title>
-            <mat-card-subtitle class="monospace">
-              {{ key }}
-            </mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image [attr.src]="dataURIs.get(key)">
-          <div>
-            <i class="fa fa-fw fa-2x fa-search"></i>
-          </div>
-        </mat-card>
-      </div>
-    </div>
-
-    <h2>Parked Domain</h2>
-    <div class="eyeballed-class-container">
-      <div *ngFor="let key of classifications.parked; let index = index" [attr.data-index]="index">
-        <mat-card class="result-card">
-          <mat-card-header>
-            <mat-card-title>
-              <span matBadge="{{ index + 1 }}" matBadgeOverlap="false" matBadgePosition="above before"
-                matBadgeColor="primary">
-                {{ key }}
-              </span>
-            </mat-card-title>
-            <mat-card-subtitle class="monospace">
-              {{ key }}
-            </mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image [attr.src]="dataURIs.get(key)">
-          <div>
-            <i class="fa fa-fw fa-2x fa-search"></i>
-          </div>
-        </mat-card>
-      </div>
-    </div>
-
   </div>
 
 </div>
