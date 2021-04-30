@@ -56,25 +56,29 @@
 
     <h2>Results</h2>
     <div>
-      <input id="webappCheckBox" type="checkbox" checked="checked" />
+      <input id="webappCheckBox" type="checkbox" [checked]="selected.webapp" />
       <label for="webappCheckBox">Webapp</label>
-      <label id="webappCount">1337</label>
+      <label id="webappCount">{{ classifications.webapp.length }}</label>
     </div>
     <div>
-      <input id="oldLookingCheckBox" type="checkbox"/>
+      <input id="oldLookingCheckBox" type="checkbox" [checked]="selected.oldLooking"/>
       <label for="oldLookingCheckBox">Old Looking</label>
+      <label id="webappCount">{{ classifications.oldLooking.length }}</label>
     </div>
     <div>
-      <input id="loginCheckBox" type="checkbox" />
+      <input id="loginCheckBox" type="checkbox" [checked]="selected.loginPage"/>
       <label for="loginCheckBox">Login Page</label>
+      <label id="webappCount">{{ classifications.loginPage.length }}</label>
     </div>
     <div>
-      <input id="custom404CheckBox" type="checkbox"/>
+      <input id="custom404CheckBox" type="checkbox" [checked]="selected.custom404"/>
       <label for="custom404CheckBox">Custom 404</label>
+      <label id="webappCount">{{ classifications.custom404.length }}</label>
     </div>
     <div>
-      <input id="parkedCheckBox" type="checkbox"/>
+      <input id="parkedCheckBox" type="checkbox" [checked]="selected.parked"/>
       <label for="parkedCheckBox">Parked Domain</label>
+      <label id="webappCount">{{ classifications.parked.length }}</label>
     </div>
 
     <button mat-raised-button (click)="exportResults()">

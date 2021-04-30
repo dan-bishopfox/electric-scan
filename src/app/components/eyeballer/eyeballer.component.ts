@@ -32,6 +32,15 @@ export class EyeBallerComponent implements OnInit {
     parked: [],
   };
 
+  // What labels are selected?
+  selected = {
+    custom404: false,
+    loginPage: false,
+    webapp: true,
+    oldLooking: false,
+    parked: false,
+  }
+
   constructor() {}
 
   ngOnInit() {
@@ -79,9 +88,6 @@ export class EyeBallerComponent implements OnInit {
   async startEyeball() {
     await this.eyeballScan();
     console.log(this.classifications);
-
-    // Add totals
-    document.getElementById("webappCount").innerText = String(this.classifications.webapp.length);
   }
 
   async eyeballScan(): Promise<void> {
@@ -154,34 +160,28 @@ export class EyeBallerComponent implements OnInit {
   }
 
   async exportResults() {
-    const webappCheckBox = document.getElementById("webappCheckBox") as HTMLInputElement;
-    var oldLookingCheckBox = document.getElementById("oldLookingCheckBox") as HTMLInputElement;
-    var loginCheckBox = document.getElementById("loginCheckBox") as HTMLInputElement;
-    var custom404CheckBox = document.getElementById("custom404CheckBox") as HTMLInputElement;
-    var parkedCheckBox = document.getElementById("parkedCheckBox") as HTMLInputElement;
-
     var selectedScreens = [];
-    if (webappCheckBox.checked){
+    if (this.selected.webapp){
       for (let entry of this.classifications.webapp) {
         selectedScreens.push(entry);
       }
     }
-    if (oldLookingCheckBox.checked){
+    if (this.selected.oldLooking){
       for (let entry of this.classifications.oldLooking) {
         selectedScreens.push(entry);
       }
     }
-    if (loginCheckBox.checked){
+    if (this.selected.loginPage){
       for (let entry of this.classifications.loginPage) {
         selectedScreens.push(entry);
       }
     }
-    if (custom404CheckBox.checked){
+    if (this.selected.custom404){
       for (let entry of this.classifications.custom404) {
         selectedScreens.push(entry);
       }
     }
-    if (parkedCheckBox.checked){
+    if (this.selected.parked){
       for (let entry of this.classifications.parked) {
         selectedScreens.push(entry);
       }
