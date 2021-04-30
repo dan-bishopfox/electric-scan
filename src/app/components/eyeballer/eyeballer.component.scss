@@ -9,7 +9,7 @@
     display: grid;
     justify-items: center;
     align-items: center;
-    
+
     grid-template-columns: 1fr 1fr 1fr;
 }
 
@@ -22,7 +22,7 @@
     display: grid;
     justify-items: center;
     align-items: center;
-    
+
     grid-template-columns: 1fr;
 }
 
@@ -71,3 +71,6 @@
     flex: auto;
 }
 
+.label-count {
+    margin-left: 10px;
+}
