@@ -15,8 +15,8 @@ export class EyeBallerComponent implements OnInit {
   dataURIs = new Map<string, string>();
   confidence = 0.6;
 
-  width = 256;
-  height = 256;
+  width = 224;
+  height = 224;
 
   tfFilesCompleted = false;
   tfFiles: File[] = [];
@@ -41,6 +41,8 @@ export class EyeBallerComponent implements OnInit {
     parked: false,
   }
 
+  selectedScreens = new Set([]);
+
   constructor() {}
 
   ngOnInit() {
@@ -49,6 +51,10 @@ export class EyeBallerComponent implements OnInit {
 
   get imageFiles(): File[] {
     return Array.from(this.images.values());
+  }
+
+  get selectedScreensArray(): string[] {
+    return Array.from(this.selectedScreens);
   }
 
   onSelect(event) {
@@ -87,7 +93,37 @@ export class EyeBallerComponent implements OnInit {
 
   async startEyeball() {
     await this.eyeballScan();
+    await this.updateSelections();
     console.log(this.classifications);
+  }
+
+  async updateSelections() {
+    this.selectedScreens = new Set([]);
+    if (this.selected.webapp){
+      for (let entry of this.classifications.webapp) {
+        this.selectedScreens.add(entry);
+      }
+    }
+    if (this.selected.oldLooking){
+      for (let entry of this.classifications.oldLooking) {
+        this.selectedScreens.add(entry);
+      }
+    }
+    if (this.selected.loginPage){
+      for (let entry of this.classifications.loginPage) {
+        this.selectedScreens.add(entry);
+      }
+    }
+    if (this.selected.custom404){
+      for (let entry of this.classifications.custom404) {
+        this.selectedScreens.add(entry);
+      }
+    }
+    if (this.selected.parked){
+      for (let entry of this.classifications.parked) {
+        this.selectedScreens.add(entry);
+      }
+    }
   }
 
   async eyeballScan(): Promise<void> {
@@ -117,6 +153,8 @@ export class EyeBallerComponent implements OnInit {
       .sub(this.offset)
       .div(this.offset)
       .expandDims();
+    console.log(img.src);
+    tensor.print();
     const predictions = (<tf.Tensor<tf.Rank>> model.predict(tensor)).dataSync();
     console.log(`${predictions}`);
     if (predictions[0] > this.confidence) {
@@ -160,35 +198,7 @@ export class EyeBallerComponent implements OnInit {
   }
 
   async exportResults() {
-    var selectedScreens = [];
-    if (this.selected.webapp){
-      for (let entry of this.classifications.webapp) {
-        selectedScreens.push(entry);
-      }
-    }
-    if (this.selected.oldLooking){
-      for (let entry of this.classifications.oldLooking) {
-        selectedScreens.push(entry);
-      }
-    }
-    if (this.selected.loginPage){
-      for (let entry of this.classifications.loginPage) {
-        selectedScreens.push(entry);
-      }
-    }
-    if (this.selected.custom404){
-      for (let entry of this.classifications.custom404) {
-        selectedScreens.push(entry);
-      }
-    }
-    if (this.selected.parked){
-      for (let entry of this.classifications.parked) {
-        selectedScreens.push(entry);
-      }
-    }
-
-    var str = selectedScreens.join("\n");
-
+    var str = Array.from(this.selectedScreens).join("\n");
     const blob = new Blob([str], { type: 'text/csv' });
     const url= window.URL.createObjectURL(blob);
     window.open(url);
