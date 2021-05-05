@@ -21,6 +21,7 @@ export class EyeBallerComponent implements OnInit {
   tfFilesCompleted = false;
   tfFiles: File[] = [];
 
+  finishedLoading = false;
   eyeballing = false;
   eyeballCompleted = false;
   eyeballedCount = 0;
@@ -57,11 +58,12 @@ export class EyeBallerComponent implements OnInit {
     return Array.from(this.selectedScreens);
   }
 
-  onSelect(event) {
+  async onSelect(event) {
     console.log(event);
-    event.addedFiles.forEach((file: File) => {
+    await Promise.all(event.addedFiles.map(async (file) => {
       this.images.set(file.name, file);
-    });
+    }));
+    this.finishedLoading = true;
   }
 
   onRemove(event) {
@@ -198,7 +200,7 @@ export class EyeBallerComponent implements OnInit {
   }
 
   async exportResults() {
-    var str = Array.from(this.selectedScreens).join("\n");
+    const str = Array.from(this.selectedScreens).join("\n");
     const blob = new Blob([str], { type: 'text/csv' });
     const url= window.URL.createObjectURL(blob);
     window.open(url);
