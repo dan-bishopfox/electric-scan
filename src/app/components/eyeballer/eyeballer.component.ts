@@ -11,8 +11,7 @@ import * as tf from '@tensorflow/tfjs';
 export class EyeBallerComponent implements OnInit {
 
   offset = tf.scalar(127.5);
-  images = new Map<string, File>();
-  dataURIs = new Map<string, string>();
+  images = new Map<string, string>();
   confidence = 0.6;
 
   width = 224;
@@ -21,6 +20,7 @@ export class EyeBallerComponent implements OnInit {
   tfFilesCompleted = false;
   tfFiles: File[] = [];
 
+  imageCount = 0;
   loadedCount = 0;
   finishedLoading = false;
   eyeballing = false;
@@ -51,18 +51,16 @@ export class EyeBallerComponent implements OnInit {
     this.fetchTfFiles();
   }
 
-  get imageFiles(): File[] {
-    return Array.from(this.images.values());
-  }
-
   get selectedScreensArray(): string[] {
     return Array.from(this.selectedScreens);
   }
 
   async onSelect(event) {
     console.log(event);
+    this.imageCount = event.addedFiles.length;
     await Promise.all(event.addedFiles.map(async (file) => {
-      this.images.set(file.name, file);
+      const dataString = await this.dataURI(file);
+      this.images.set(file.name, dataString);
     }));
   }
 
@@ -140,20 +138,17 @@ export class EyeBallerComponent implements OnInit {
 
   async classifyImage(key: string, model: tf.LayersModel) {
     const img = new Image(this.width, this.height);
-    img.src = await this.dataURI(this.images.get(key));
+    img.src = this.images.get(key);
     console.log("Queued up image: " + key)
     this.loadedCount++;
     img.onload = () => {
       console.log(`classifying: ${key}`);
-      this.dataURIs.set(key, img.src);
       const tensor = tf.browser.fromPixels(img)
         .resizeNearestNeighbor([224, 224])
         .toFloat()
         .sub(this.offset)
         .div(this.offset)
         .expandDims();
-      // console.log(img.src);
-      // tensor.print();
       const predictions = (<tf.Tensor<tf.Rank>> model.predict(tensor)).dataSync();
       console.log(`${predictions}`);
       if (predictions[0] > this.confidence) {
@@ -178,11 +173,11 @@ export class EyeBallerComponent implements OnInit {
       }
       this.eyeballedCount++;
 
-      if (this.eyeballedCount >= this.images.size) {
+      if (this.eyeballedCount >= this.imageCount) {
         console.log('eyeballed all images');
         this.eyeballing = false;
         this.eyeballCompleted = true;
-        this.images = null;
+        this.updateSelections();
       }
     };
   }
@@ -198,7 +193,11 @@ export class EyeBallerComponent implements OnInit {
   }
 
   eyeballPercent() {
-    return (this.eyeballedCount / this.images.size) * 100;
+    return (this.eyeballedCount / this.imageCount) * 100;
+  }
+
+  loadPercent() {
+    return (this.images.size / this.imageCount) * 100;
   }
 
   restart() {

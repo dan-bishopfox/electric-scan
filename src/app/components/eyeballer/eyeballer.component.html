@@ -40,7 +40,11 @@
 <!-- Progress Bar -->
 <div *ngIf="tfFilesCompleted && eyeballing && !eyeballCompleted">
   <mat-card>
-    <h3>{{eyeballedCount}} of {{this.images.size}}</h3>
+    <h3>Loading Images: {{this.images.size}} of {{this.imageCount}}</h3>
+    <mat-progress-bar mode="determinate" [value]="loadPercent()"></mat-progress-bar>
+  </mat-card>
+  <mat-card>
+    <h3>Classifying: {{eyeballedCount}} of {{this.imageCount}}</h3>
     <mat-progress-bar mode="determinate" [value]="eyeballPercent()"></mat-progress-bar>
   </mat-card>
 </div>
@@ -83,7 +87,7 @@
 
     <div class="eyeballed-class-container">
 
-      <div *ngFor="let key of selectedScreensArray.slice(0, 9); let index = index" [attr.data-index]="index">
+      <div *ngFor="let key of selectedScreensArray.slice(0, 8); let index = index" [attr.data-index]="index">
         <mat-card class="result-card">
           <mat-card-header>
             <mat-card-title>
@@ -95,7 +99,7 @@
               {{ key }}
             </mat-card-subtitle>
           </mat-card-header>
-          <img class="images" mat-card-image [attr.src]="dataURIs.get(key)">
+          <img class="images" mat-card-image src="{{images.get(key)}}">
           <div>
             <i class="fa fa-fw fa-2x fa-search"></i>
           </div>
