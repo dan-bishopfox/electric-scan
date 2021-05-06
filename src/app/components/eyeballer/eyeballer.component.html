@@ -44,7 +44,7 @@
     <mat-progress-bar mode="determinate" [value]="loadPercent()"></mat-progress-bar>
   </mat-card>
   <mat-card>
-    <h3>Classifying: {{eyeballedCount}} of {{this.imageCount}}</h3>
+    <h3>Classifying: {{this.eyeballedCount}} of {{this.imageCount}}</h3>
     <mat-progress-bar mode="determinate" [value]="eyeballPercent()"></mat-progress-bar>
   </mat-card>
 </div>
@@ -55,39 +55,47 @@
 
     <h2>Results</h2>
     <div>
-      <input id="webappCheckBox" type="checkbox" [checked]="selected.webapp" (change)="selected.webapp = !selected.webapp; updateSelections()"/>
-      <label for="webappCheckBox">Webapp</label>
-      <label class="label-count" id="webappCount">{{ classifications.webapp.length }}</label>
-    </div>
-    <div>
-      <input id="oldLookingCheckBox" type="checkbox" [checked]="selected.oldLooking" (change)="selected.oldLooking = !selected.oldLooking; updateSelections()"/>
-      <label for="oldLookingCheckBox">Old Looking</label>
-      <label class="label-count" id="webappCount">{{ classifications.oldLooking.length }}</label>
-    </div>
-    <div>
-      <input id="loginCheckBox" type="checkbox" [checked]="selected.loginPage" (change)="selected.loginPage = !selected.loginPage; updateSelections()"/>
-      <label for="loginCheckBox">Login Page</label>
-      <label class="label-count" id="webappCount">{{ classifications.loginPage.length }}</label>
-    </div>
-    <div>
-      <input id="custom404CheckBox" type="checkbox" [checked]="selected.custom404" (change)="selected.custom404 = !selected.custom404; updateSelections()"/>
-      <label for="custom404CheckBox">Custom 404</label>
-      <label class="label-count" id="webappCount">{{ classifications.custom404.length }}</label>
-    </div>
-    <div>
-      <input id="parkedCheckBox" type="checkbox" [checked]="selected.parked" (change)="selected.parked = !selected.parked; updateSelections()"/>
-      <label for="parkedCheckBox">Parked Domain</label>
-      <label class="label-count" id="webappCount">{{ classifications.parked.length }}</label>
+      <div>
+        <button mat-raised-button [disabled]="selected.webapp === 0" (click)="selected.webapp = 0; updateSelections()">Must Include</button>
+        <button mat-raised-button [disabled]="selected.webapp === 1" (click)="selected.webapp = 1; updateSelections()">Webapp</button>
+        <button mat-raised-button [disabled]="selected.webapp === 2" (click)="selected.webapp = 2; updateSelections()">Never Include</button>
+        <label class="label-count" id="webappCount">{{ classifications.webapp.length }}</label>
+
+      </div>
+      <div>
+        <button mat-raised-button [disabled]="selected.oldLooking === 0" (click)="selected.oldLooking = 0; updateSelections()">Must Include</button>
+        <button mat-raised-button [disabled]="selected.oldLooking === 1" (click)="selected.oldLooking = 1; updateSelections()">Old Looking</button>
+        <button mat-raised-button [disabled]="selected.oldLooking === 2" (click)="selected.oldLooking = 2; updateSelections()">Never Include</button>
+        <label class="label-count" id="webappCount">{{ classifications.oldLooking.length }}</label>
+      </div>
+      <div>
+        <button mat-raised-button [disabled]="selected.loginPage === 0" (click)="selected.loginPage = 0; updateSelections()">Must Include</button>
+        <button mat-raised-button [disabled]="selected.loginPage === 1" (click)="selected.loginPage = 1; updateSelections()">Login Page</button>
+        <button mat-raised-button [disabled]="selected.loginPage === 2" (click)="selected.loginPage = 2; updateSelections()">Never Include</button>
+        <label class="label-count" id="webappCount">{{ classifications.loginPage.length }}</label>
+      </div>
+      <div>
+        <button mat-raised-button [disabled]="selected.custom404 === 0" (click)="selected.custom404 = 0; updateSelections()">Must Include</button>
+        <button mat-raised-button [disabled]="selected.custom404 === 1" (click)="selected.custom404 = 1; updateSelections()">Custom 404</button>
+        <button mat-raised-button [disabled]="selected.custom404 === 2" (click)="selected.custom404 = 2; updateSelections()">Never Include</button>
+        <label class="label-count" id="webappCount">{{ classifications.custom404.length }}</label>
+      </div>
+      <div>
+        <button mat-raised-button [disabled]="selected.parked === 0" (click)="selected.parked = 0; updateSelections()">Must Include</button>
+        <button mat-raised-button [disabled]="selected.parked === 1" (click)="selected.parked = 1; updateSelections()">Parked Domain</button>
+        <button mat-raised-button [disabled]="selected.parked === 2" (click)="selected.parked = 2; updateSelections()">Never Include</button>
+        <label class="label-count" id="webappCount">{{ classifications.parked.length }}</label>
+      </div>
     </div>
 
     <button mat-raised-button (click)="exportResults()">
       Export
     </button>
-    Total Selected: {{ selectedScreens.size }}
+    Total Selected: {{ selectedScreens.length }}
 
     <div class="eyeballed-class-container">
 
-      <div *ngFor="let key of selectedScreensArray.slice(0, 8); let index = index" [attr.data-index]="index">
+      <div *ngFor="let key of selectedScreens.slice(0, 8); let index = index" [attr.data-index]="index">
         <mat-card class="result-card">
           <mat-card-header>
             <mat-card-title>

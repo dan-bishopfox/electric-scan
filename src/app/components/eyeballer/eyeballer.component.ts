@@ -35,24 +35,24 @@ export class EyeBallerComponent implements OnInit {
   };
 
   // What labels are selected?
+  // This is a tri-state:
+  //  0 means "always select"
+  //  1 means "don't care"
+  //  2 means "never select"
   selected = {
-    custom404: false,
-    loginPage: false,
-    webapp: true,
-    oldLooking: false,
-    parked: false,
+    custom404: 2,
+    loginPage: 1,
+    webapp: 0,
+    oldLooking: 1,
+    parked: 2,
   }
 
-  selectedScreens = new Set([]);
+  selectedScreens: string[] = [];
 
   constructor() {}
 
   ngOnInit() {
     this.fetchTfFiles();
-  }
-
-  get selectedScreensArray(): string[] {
-    return Array.from(this.selectedScreens);
   }
 
   async onSelect(event) {
@@ -98,32 +98,75 @@ export class EyeBallerComponent implements OnInit {
   }
 
   async updateSelections() {
-    this.selectedScreens = new Set([]);
-    if (this.selected.webapp){
+    // First thing: load up all the images into the set
+    let selectedScreensSet = new Set([]);
+    for (let entry of this.classifications.webapp) {
+      selectedScreensSet.add(entry);
+    }
+    for (let entry of this.classifications.oldLooking) {
+      selectedScreensSet.add(entry);
+    }
+    for (let entry of this.classifications.loginPage) {
+      selectedScreensSet.add(entry);
+    }
+    for (let entry of this.classifications.custom404) {
+      selectedScreensSet.add(entry);
+    }
+    for (let entry of this.classifications.parked) {
+      selectedScreensSet.add(entry);
+    }
+    let selectionsArray = Array.from(selectedScreensSet);
+
+    // Calculate intersections for each "must include" selections
+    if (this.selected.webapp === 0){
+      let tempArray = selectionsArray.filter(value => this.classifications.webapp.includes(value));
+      selectionsArray = tempArray;
+    }
+    if (this.selected.oldLooking === 0){
+      let tempArray = selectionsArray.filter(value => this.classifications.oldLooking.includes(value));
+      selectionsArray = tempArray;
+    }
+    if (this.selected.loginPage === 0){
+      let tempArray = selectionsArray.filter(value => this.classifications.loginPage.includes(value));
+      selectionsArray = tempArray;
+    }
+    if (this.selected.custom404 === 0){
+      let tempArray = selectionsArray.filter(value => this.classifications.custom404.includes(value));
+      selectionsArray = tempArray;
+    }
+    if (this.selected.parked === 0){
+      let tempArray = selectionsArray.filter(value => this.classifications.parked.includes(value));
+      selectionsArray = tempArray;
+    }
+
+    // Now remove any "Must not include" selection
+    selectedScreensSet = new Set(selectionsArray);
+    if (this.selected.webapp === 2){
       for (let entry of this.classifications.webapp) {
-        this.selectedScreens.add(entry);
+        selectedScreensSet.delete(entry);
       }
     }
-    if (this.selected.oldLooking){
+    if (this.selected.oldLooking === 2){
       for (let entry of this.classifications.oldLooking) {
-        this.selectedScreens.add(entry);
+        selectedScreensSet.delete(entry);
       }
     }
-    if (this.selected.loginPage){
+    if (this.selected.loginPage === 2){
       for (let entry of this.classifications.loginPage) {
-        this.selectedScreens.add(entry);
+        selectedScreensSet.delete(entry);
       }
     }
-    if (this.selected.custom404){
+    if (this.selected.custom404 === 2){
       for (let entry of this.classifications.custom404) {
-        this.selectedScreens.add(entry);
+        selectedScreensSet.delete(entry);
       }
     }
-    if (this.selected.parked){
+    if (this.selected.parked === 2){
       for (let entry of this.classifications.parked) {
-        this.selectedScreens.add(entry);
+        selectedScreensSet.delete(entry);
       }
     }
+    this.selectedScreens = Array.from(selectedScreensSet);
   }
 
   async eyeballScan(): Promise<void> {
@@ -205,7 +248,7 @@ export class EyeBallerComponent implements OnInit {
   }
 
   async exportResults() {
-    const str = Array.from(this.selectedScreens).join("\n");
+    const str = this.selectedScreens.join("\n");
     const blob = new Blob([str], { type: 'text/csv' });
     const url= window.URL.createObjectURL(blob);
     window.open(url);
