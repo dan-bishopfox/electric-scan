@@ -31,7 +31,7 @@
     justify-items: center;
     align-items: center;
 
-    grid-template-rows: minmax(250px, auto);
+    // grid-template-rows: minmax(250px, auto);
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: 1em;
     margin: 1em;
@@ -49,9 +49,9 @@
     opacity: .5;
 }
 
-.result-card:hover div {
-    display: block;
-}
+// .result-card:hover div {
+//     display: block;
+// }
 
 .result-card > div {
     display: none;
@@ -75,7 +75,59 @@
     margin-left: 10px;
 }
 
-// .images {
-//   width: 320px;
-//   height: 200px;
-// }
+.include-button {
+  background-color: green;
+}
+
+.include-button:disabled {
+  background-color: #006802;
+}
+
+.reject-button {
+  background-color: red;
+}
+
+.reject-button:disabled {
+  background-color: #700000;
+}
+
+.img-container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.preview-image {
+  width: 100%;
+}
+
+.webapp-label {
+  background-color: blue;
+  color: white;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+.old-looking-label {
+  background-color: green;
+  color: white;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+.login-label {
+  background-color: purple;
+  color: white;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+.custom-404-label {
+  background-color: orange;
+  color: white;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+.parked-label {
+  background-color: red;
+  color: white;
+  margin-left: 1px;
+  margin-right: 1px;
+}

@@ -7,12 +7,12 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { BaseMaterialModule } from './base-materials';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { EyeBallerComponent } from './components/eyeballer/eyeballer.component';
+import { EyeballerComponent } from './components/eyeballer/eyeballer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EyeBallerComponent
+    EyeballerComponent
   ],
   imports: [
     BrowserModule,

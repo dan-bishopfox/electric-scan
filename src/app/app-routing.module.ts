@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { EyeBallerComponent } from './components/eyeballer/eyeballer.component';
+import { EyeballerComponent } from './components/eyeballer/eyeballer.component';
 
 const routes: Routes = [
-  { path: '', component: EyeBallerComponent },
+  { path: '', component: EyeballerComponent },
 ];
 
 @NgModule({

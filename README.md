@@ -1,6 +1,6 @@
 # Weballer
 
-Web front-end for EyeBaller
+Web front-end for Eyeballer
 
 
 ### Setup

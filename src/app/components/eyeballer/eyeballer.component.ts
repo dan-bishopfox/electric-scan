@@ -8,7 +8,7 @@ import * as tf from '@tensorflow/tfjs';
   templateUrl: './eyeballer.component.html',
   styleUrls: ['./eyeballer.component.scss']
 })
-export class EyeBallerComponent implements OnInit {
+export class EyeballerComponent implements OnInit {
 
   offset = tf.scalar(127.5);
   images = new Map<string, string>();
@@ -66,6 +66,37 @@ export class EyeBallerComponent implements OnInit {
 
   onRemove(event) {
     this.images.delete(event.name);
+  }
+
+  isWebapp(key) {
+    if(this.classifications.webapp.includes(key)) {
+      return "Webapp"
+    }
+    return ""
+  }
+  isCustom404(key) {
+    if(this.classifications.custom404.includes(key)) {
+      return "Custom 404"
+    }
+    return ""
+  }
+  isLoginPage(key) {
+    if(this.classifications.loginPage.includes(key)) {
+      return "Login Page"
+    }
+    return ""
+  }
+  isOldLooking(key) {
+    if(this.classifications.oldLooking.includes(key)) {
+      return "Old Looking"
+    }
+    return ""
+  }
+  isParked(key) {
+    if(this.classifications.parked.includes(key)) {
+      return "Parked Domain"
+    }
+    return ""
   }
 
   async fetchTfFiles() {
